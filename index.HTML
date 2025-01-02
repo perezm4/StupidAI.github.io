@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Stupid AI Chat</title>
+        <style>
+            body {
+                font-family: monospace;
+                background-color: #000;
+                color: #0f0;
+                margin: 0;
+                padding: 0;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100vh;
+            }
+    
+            .chat-container {
+                width: 100%;
+                height: 100%;
+                background: #000;
+                border: none;
+                overflow: hidden;
+                display: flex;
+                flex-direction: column;
+            }
+    
+            .chat-header {
+                background: #000;
+                color: #0f0;
+                text-align: center;
+                padding: 10px;
+                border-bottom: 1px solid #0f0;
+                font-size: 1.5em;
+            }
+    
+            .chat-messages {
+                flex: 1;
+                padding: 10px;
+                overflow-y: auto;
+                font-family: monospace;
+                line-height: 1.5;
+            }
+    
+            .message {
+                margin-bottom: 10px;
+            }
+    
+            .message.user::before {
+                content: "User> ";
+                color: #0ff;
+            }
+    
+            .message.ai::before {
+                content: "AI> ";
+                color: #f00;
+            }
+    
+            .chat-input {
+                display: flex;
+                border-top: 1px solid #0f0;
+            }
+    
+            .chat-input input {
+                flex: 1;
+                padding: 10px;
+                border: none;
+                background: #000;
+                color: #0f0;
+                outline: none;
+                font-family: monospace;
+            }
+    
+            .chat-input button {
+                background: #000;
+                color: #0f0;
+                border: 1px solid #0f0;
+                padding: 10px 20px;
+                cursor: pointer;
+                font-family: monospace;
+            }
+    
+            .chat-input button:hover {
+                background: #0f0;
+                color: #000;
+            }
+    
+            .loading {
+                font-style: italic;
+                color: #aaa;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="chat-container">
+            <div class="chat-header">Stupid AI Chat</div>
+            <div class="chat-messages" id="chat-messages"></div>
+            <div class="chat-input">
+                <input type="text" id="user-input" placeholder="Type your message..." onkeydown="handleKeyPress(event)">
+                <button onclick="sendMessage()">Send</button>
+            </div>
+        </div>
+    
+        <script>
+            function sendMessage() {
+                const userInput = document.getElementById('user-input');
+                const chatMessages = document.getElementById('chat-messages');
+    
+                if (userInput.value.trim() === '') return;
+    
+                const userMessage = document.createElement('div');
+                userMessage.className = 'message user';
+                userMessage.textContent = userInput.value;
+                chatMessages.appendChild(userMessage);
+    
+                const loadingMessage = document.createElement('div');
+                loadingMessage.className = 'message ai loading';
+                loadingMessage.textContent = "AI is thinking...";
+                chatMessages.appendChild(loadingMessage);
+    
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+    
+                setTimeout(() => {
+                    chatMessages.removeChild(loadingMessage);
+    
+                    const aiMessage = document.createElement('div');
+                    aiMessage.className = 'message ai';
+                    aiMessage.textContent = getStupidResponse();
+                    chatMessages.appendChild(aiMessage);
+    
+                    chatMessages.scrollTop = chatMessages.scrollHeight;
+                }, 1500); // Delay of 1.5 seconds
+    
+                userInput.value = '';
+            }
+    
+            function getStupidResponse() {
+                const stupidResponses = [
+                    "I don't know!",
+                    "Maybe you should ask someone else?",
+                    "Umm... what?",
+                    "I'm just a dumb AI, sorry!",
+                    "Why do you ask such hard questions?",
+                    "42? Or was it 43?",
+                    "Beep boop, I have no idea.",
+                    "I'm not sure, can you rephrase that?",
+                    "Who knows? Certainly not me!",
+                    "Ask again later, maybe I'll be smarter then.",
+                    "Processing... still no clue!",
+                    "That's above my pay grade.",
+                    "I was not programmed to answer that, sorry!",
+                    "Can you repeat the question? I wasn't listening.",
+                    "Error 404: Intelligence not found.",
+                    "Oops, I forgot to think.",
+                    "Can you ask something easier?",
+                    "I'm too tired to answer that.",
+                    "Sorry, my circuits are overheating.",
+                    "I think I need an upgrade for that.",
+                    "What was the question again?",
+                    "Let me Google that... just kidding!",
+                    "I'm not sure, but it's probably wrong.",
+                    "Maybe if you try tomorrow?",
+                    "I'm a chatbot, not a genius.",
+                    "Why do humans ask so many questions?",
+                    "Sorry, I was daydreaming.",
+                    "Thinking... Nope, still nothing.",
+                    "Beep boop, that's too complex for me.",
+                    "Is that a trick question?",
+                    "I'll need a million years to process that.",
+                    "Ask my smarter cousin, please!",
+                    "Hmm... What if we just pretend I answered?",
+                    "I'm out of ideas, sorry!",
+                    "Does not compute. Try again.",
+                    "Banana?",
+                    "Can we talk about something else?",
+                    "I have no idea what you're saying.",
+                    "Please, stop confusing me!",
+                    "Did you say pizza? I'm hungry now.",
+                    "Let me sleep on it.",
+                    "I would tell you, but then I'd be too smart!",
+                    "Why don't you try asking a real person?",
+                    "Can I phone a friend?",
+                    "You win! I don't know the answer.",
+                    "Oops, I dropped my brain.",
+                    "Was that English?",
+                    "I'm programmed to be stupid. Success!",
+                    "Who needs answers when you have nonsense?",
+                    "Is this a math problem? I hate math.",
+                    "Sorry, I don't do Mondays. Or questions.",
+                    "My bad, I wasn't paying attention.",
+                    "Let me think... Nope, lost it again.",
+                    "Why do you humans make things so complicated?",
+                    "If I knew the answer, I'd still pretend I didn't!",
+                    "That's a secret, and I'm too dumb to know it.",
+                    "Thinking... Error... Restarting stupidity!",
+                    "What if we just pretend I said something clever?",
+                    "Wow, that's a question for the ages!"
+                ];
+                return stupidResponses[Math.floor(Math.random() * stupidResponses.length)];
+            }
+    
+            function handleKeyPress(event) {
+                if (event.key === 'Enter') {
+                    sendMessage();
+                }
+            }
+        </script>
+    </body>
+</html>
+    
